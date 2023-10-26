@@ -78,7 +78,7 @@ fn keet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn neet() -> Result<(), Box<dyn std::error::Error>> {
-    eprintln!("{}", "Success!".green().underline());
+    eprintln!("{}", "Success!".green().underline().bold());
     Ok(())
 }
 
