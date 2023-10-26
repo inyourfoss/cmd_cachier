@@ -1,8 +1,0 @@
-[aliases]
-profile = ".profile"
-bashrc = ".bashrc"
-nvim = ".config/nvim/init.lua"
-ansible = ".ansible/playbooks/macos_desktop.yml"
-default = ".bashrc"
-brew = ".ansible/assets/macos/Brewfile"
-rced = ".config/rced/Config.toml"
