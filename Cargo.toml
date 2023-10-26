@@ -1,0 +1,17 @@
+[package]
+name = "cmd_cachier"
+authors = ["Matthew Mitchell"]
+version = "0.0.8"
+edition = "2021"
+license = "MIT"
+#repository = "https://gitlab.com/device-config/rced"
+#documentation = "https://gitlab.com/device-config/rced/README.md"
+#homepage = "https://gitlab.com/device-config/rced/README.md"
+#readme = "README.md"
+description = "A caching service for your cli commands using redis"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+colored = "2"
+redis = "0.23"
