@@ -104,12 +104,13 @@ fn peet() -> Result<(), Box<dyn std::error::Error>> {
     let mut _con = client.get_connection()?;
     
     let response :f64 = redis::cmd("MEMORY").arg("USAGE").arg("cmd").query(&mut _con)?;
-    let mem_usage_kb: f64 = response/1e3;
-    let mem_usage_mb: f64 = response/1e6;
+    let conversion_number: f64 = 1024.0;
+    let mem_usage_kb: f64 = response/(conversion_number);
+    let mem_usage_mb: f64 = response/(conversion_number*conversion_number);
 
-    println!("Bytes:\t\t{:.1}", response);
-    println!("Kilobytes:\t{:.3}", mem_usage_kb);
-    println!("Megabytes:\t{:.3}", mem_usage_mb);
+    println!("Bytes:\t{:.1}", response);
+    println!("KiB:\t{:.3}", mem_usage_kb);
+    println!("MiB:\t{:.3}", mem_usage_mb);
 
     Ok(())
 }
