@@ -15,6 +15,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match first_arg.as_str() {
         "save" => fleet(env::args().skip(2).collect())?,
         "query" => yeet(env::args().skip(2).collect())?,
+        "info" => meet()?,
+        "meminfo" => peet()?,
         _ => keet(env::args().skip(1).collect())?,
     }
 
@@ -79,3 +81,35 @@ fn neet() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+fn meet() -> Result<(), Box<dyn std::error::Error>> {
+    let client = redis::Client::open("redis://127.0.0.1/")?;
+    let mut _con = client.get_connection()?;
+
+    
+    let response: String = redis::cmd("INFO").arg("MEMORY").query(&mut _con)?;
+    let result_list: Vec<&str> = response.split("\n").collect();
+    
+    println!("{}", "REDIS MEMORY INFO:".yellow().bold().underline());
+    for result in result_list {
+        if result.contains("human") {
+            println!("{}", result);
+        }
+    }
+
+    Ok(())
+}
+
+fn peet() -> Result<(), Box<dyn std::error::Error>> {
+    let client = redis::Client::open("redis://127.0.0.1/")?;
+    let mut _con = client.get_connection()?;
+    
+    let response :f64 = redis::cmd("MEMORY").arg("USAGE").arg("cmd").query(&mut _con)?;
+    let mem_usage_kb: f64 = response/1e3;
+    let mem_usage_mb: f64 = response/1e6;
+
+    println!("Bytes:\t\t{:.1}", response);
+    println!("Kilobytes:\t{:.3}", mem_usage_kb);
+    println!("Megabytes:\t{:.3}", mem_usage_mb);
+
+    Ok(())
+}
