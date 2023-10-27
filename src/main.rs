@@ -38,10 +38,8 @@ fn yeet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
 fn fleet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
-    /*
     let client = redis::Client::open("redis://127.0.0.1/")?;
     let mut _con = client.get_connection()?;
-    */
 
     let joined_args = args.join(" ");
 
@@ -57,8 +55,7 @@ fn fleet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
               "\"".yellow().bold(),
               );
 
-    Command::new("redis-cli").arg("HSET").arg("cmd").arg(joined_args).arg(cmd_stdout)
-        .spawn().expect("Could not execute redis-cli.");
+    redis::cmd("HSET").arg("cmd").arg(joined_args).arg(cmd_stdout).execute(&mut _con);
 
     std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
 
