@@ -17,6 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "query" => yeet(env::args().skip(2).collect())?,
         "info" => meet()?,
         "meminfo" => peet()?,
+        "help" => kleet()?,
         _ => keet(env::args().skip(1).collect())?,
     }
 
@@ -114,3 +115,36 @@ fn peet() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+fn kleet() -> Result<(), Box<dyn std::error::Error>> {
+//    eprintln!("{}", "Success!".green().underline().bold());
+    let help_page = r#"cmd_cachier help page
+
+USAGE
+Basic usage (Saves automatically if command is not already in cache but otherwise prints from cache):
+    $ cmd_cachier ANY_COMMAND
+
+Use with subcommand:
+    $ cmd_cachier SUBCOMMAND [ANY_COMMAND]
+
+MORE HELP
+View man page:
+    $ man cmd_cachier
+
+SUBCOMMANDS
+Force cache refresh for a command:
+    $ cmd_cachier save ANY_COMMAND
+
+Force query for a command:
+    $ cmd_cachier query ANY_COMMAND
+
+Display memory usage:
+    $ cmd_cachier meminfo
+
+Display help page:
+    $ cmd_cachier help
+"#;
+    println!("{}", help_page);
+    Ok(())
+}
+
