@@ -13,18 +13,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     match first_arg.as_str() {
-        "save" => fleet(env::args().skip(2).collect())?,
-        "query" => yeet(env::args().skip(2).collect())?,
-        "info" => meet()?,
-        "meminfo" => peet()?,
-        "help" => kleet()?,
-        _ => keet(env::args().skip(1).collect())?,
+        "save" => save_cmd(env::args().skip(2).collect())?,
+        "query" => query_cmd(env::args().skip(2).collect())?,
+        "info" => redis_info()?,
+        "meminfo" => redis_meminfo()?,
+        "help" => display_help_page()?,
+        _ => save_or_query_cmd(env::args().skip(1).collect())?,
     }
 
     Ok(())
 }
 
-fn yeet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
     let client = redis::Client::open("redis://127.0.0.1/")?;
     let mut _con = client.get_connection()?;
@@ -39,7 +39,7 @@ fn yeet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 
-fn fleet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
     let client = redis::Client::open("redis://127.0.0.1/")?;
     let mut _con = client.get_connection()?;
@@ -62,27 +62,27 @@ fn fleet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
     std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
 
-    yeet(args)?;
+    query_cmd(args)?;
 
     Ok(())
 }
 
-fn keet(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
-    match yeet(args.clone()) {
+    match query_cmd(args.clone()) {
         Ok(()) => neet()?,
-        _ => fleet(args.clone())?,
+        _ => save_cmd(args.clone())?,
     };
 
     Ok(())
 }
 
 fn neet() -> Result<(), Box<dyn std::error::Error>> {
-    eprintln!("{}", "Success!".green().underline().bold());
+    //eprintln!("{}", "Success!".green().underline().bold());
     Ok(())
 }
 
-fn meet() -> Result<(), Box<dyn std::error::Error>> {
+fn redis_info() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open("redis://127.0.0.1/")?;
     let mut _con = client.get_connection()?;
 
@@ -100,7 +100,7 @@ fn meet() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn peet() -> Result<(), Box<dyn std::error::Error>> {
+fn redis_meminfo() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open("redis://127.0.0.1/")?;
     let mut _con = client.get_connection()?;
     
@@ -116,7 +116,7 @@ fn peet() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn kleet() -> Result<(), Box<dyn std::error::Error>> {
+fn display_help_page() -> Result<(), Box<dyn std::error::Error>> {
 //    eprintln!("{}", "Success!".green().underline().bold());
     let help_page = r#"cmd_cachier help page
 
