@@ -16,3 +16,5 @@ systeminstall:
 systemuninstall:
 	rm -f "/usr/bin/cmd_cachier"
 	rm -f "/usr/share/man/man1/cmd_cachier*"
+documentation:
+	groff -mandoc -T pdf < man/man1/cmd_cachier.1 > docs/cmd_cachier.1.pdf
