@@ -4,14 +4,17 @@
 
 # Install 
 ## Dependencies
+### Runtime
 - `redis`
+### Build
 - `cargo`
   - `colored` library (automatically pulled by cargo)
   - `redis-rs` library (automatically pulled by cargo)
   - `Command` library (automatically pulled by cargo)
 - `groff` usually already installed
-- `man` usually already installed
 - `make` or `gnumake` usually already installed
+### Optional
+- `man` usually already installed
 
 ## Via GitLab
 Clone repo:
