@@ -4,6 +4,7 @@
 
 # Install 
 ## Dependencies
+- `redis`
 - `cargo`
   - `colored` library (automatically pulled by cargo)
   - `redis-rs` library (automatically pulled by cargo)
