@@ -17,7 +17,7 @@
 $ git clone https://gitlab.com/inyourfoss/cmd_cachier.git
 $ cd cmd_cachier 
 $ make build
-$ make systeminstall # Or
+# make systeminstall # Or
 $ make install # manpage won't work on non-systeminstall
 ```
 
