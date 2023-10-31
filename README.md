@@ -13,7 +13,7 @@
 - `man` usually already installed
 - `make` or `gnumake` usually already installed
 
-## How to
+## Via GitLab
 Clone repo:
 ```
 git clone https://gitlab.com/inyourfoss/cmd_cachier.git
@@ -35,3 +35,8 @@ Or:
 make install # manpage won't work on non-systeminstall
 ```
 
+## Via crates.io
+As of now the man page will not work as it is only a user space install. 
+```
+cargo install cmd_cachier
+```
