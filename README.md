@@ -58,5 +58,5 @@ brew install redis
 ```
 Start and enable on boot
 ```
-brew services start redis
+brew service start redis
 ```
