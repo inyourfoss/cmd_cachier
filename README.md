@@ -13,11 +13,24 @@
 - `make` or `gnumake` usually already installed
 
 ## How to
+Clone repo:
 ```
-$ git clone https://gitlab.com/inyourfoss/cmd_cachier.git
-$ cd cmd_cachier 
-$ make build
-# make systeminstall # Or
-$ make install # manpage won't work on non-systeminstall
+git clone https://gitlab.com/inyourfoss/cmd_cachier.git
+```
+Move into repo directory:
+```
+cd cmd_cachier 
+```
+Build project:
+```
+make build
+```
+Execute installation:
+```
+sudo make systeminstall # Or
+```
+Or:
+```
+make install # manpage won't work on non-systeminstall
 ```
 
