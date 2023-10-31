@@ -18,6 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "info" => redis_info()?,
         "meminfo" => redis_meminfo()?,
         "help" => display_help_page()?,
+        "" => display_help_page()?,
         _ => save_or_query_cmd(env::args().skip(1).collect())?,
     }
 
