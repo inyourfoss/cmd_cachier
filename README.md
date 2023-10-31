@@ -40,3 +40,23 @@ As of now the man page will not work as it is only a user space install.
 ```
 cargo install cmd_cachier
 ```
+
+## Setting up Redis (for more see [manpage](https://gitlab.com/inyourfoss/cmd_cachier/-/blob/main/docs/cmd_cachier.1.pdf?ref_type=heads))
+### Example: Fedora
+Install:
+```
+sudo dnf install redis
+```
+Start and enable on boot
+```
+systemctl enable --now redis
+```
+### Example: MacOS
+Install:
+```
+brew install redis
+```
+Start and enable on boot
+```
+brew services start redis
+```
