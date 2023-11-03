@@ -9,7 +9,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let first_arg = match env::args().nth(1) {
         Some(a) => a,
-        None => "default".to_string(),
+        None => "none".to_string(),
     };
 
     match first_arg.as_str() {
@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "info" => redis_info()?,
         "meminfo" => redis_meminfo()?,
         "help" => display_help_page()?,
-        "" => display_help_page()?,
+        "none" => display_help_page()?,
         _ => save_or_query_cmd(env::args().skip(1).collect())?,
     }
 
@@ -30,9 +30,12 @@ fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open("redis://127.0.0.1/")?;
     let mut _con = client.get_connection()?;
 
-    let joined_args = args.join(" ");
+    let joined_args:String = args.join(" ");
 
-    let result: String = redis::cmd("HGET").arg("cmd").arg(joined_args).query(&mut _con)?;
+    let result: String = match redis::cmd("HGET").arg("cmd").arg(&joined_args).query(&mut _con) {
+        Ok(a) => a,
+        _ => format!("{}\n  {}\n{}\n", "KEY:".red().underline().bold(), &joined_args.bold(), "Not found in cache.".red().bold() )
+    };
 
     print!("{}", result);
 
