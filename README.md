@@ -54,6 +54,17 @@ Start and enable on boot
 ```
 systemctl enable --now redis
 ```
+### Example: Fedora Silverblue
+Install:
+```
+sudo rpm-ostree install redis
+```
+Reboot then enable the service:
+```
+systemctl enable --now redis
+```
+Test with `redis-cli ping`. Should return `PONG`
+
 ### Example: MacOS
 Install:
 ```
