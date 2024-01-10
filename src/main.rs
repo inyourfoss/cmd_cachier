@@ -42,6 +42,24 @@ fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+
+    let client = redis::Client::open("redis://127.0.0.1/")?;
+    let mut _con = client.get_connection()?;
+
+    let joined_args:String = args.join(" ");
+
+
+    let redis_result: Option<String> = redis::cmd("HGET").arg("cmd").arg(&joined_args).query(&mut _con)?;
+
+    match redis_result {
+        Some(a) => print!("{}", a),
+        _ => save_cmd(args.clone())?
+    }
+
+    Ok(())
+}
+
 
 fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
@@ -71,20 +89,6 @@ fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
-
-    match query_cmd(args.clone()) {
-        Ok(()) => neet()?,
-        _ => save_cmd(args.clone())?,
-    };
-
-    Ok(())
-}
-
-fn neet() -> Result<(), Box<dyn std::error::Error>> {
-    //eprintln!("{}", "Success!".green().underline().bold());
-    Ok(())
-}
 
 fn redis_info() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open("redis://127.0.0.1/")?;
