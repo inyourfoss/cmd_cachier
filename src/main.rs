@@ -1,11 +1,15 @@
 use std::env;
 use std::process::Command;
+use memcache;
 
 use colored::*;
 
 const REDIS_READ_WRITE_LATENCY_IN_MS: std::time::Duration = std::time::Duration::from_millis(20);
+const RUNTIME_DIR: &str = "/run/user/1000";
+const SOCKET: &str = "memcache:///run/user/1000/tmp.sock";
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    //RUNTIME_DIR = "/run/user/1000";
 
     let first_arg = match env::args().nth(1) {
         Some(a) => a,
@@ -15,8 +19,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match first_arg.as_str() {
         "save" => save_cmd(env::args().skip(2).collect())?,
         "query" => query_cmd(env::args().skip(2).collect())?,
-        "info" => redis_info()?,
-        "meminfo" => redis_meminfo()?,
+    //    "info" => redis_info()?,
+    //    "meminfo" => redis_meminfo()?,
         "help" => display_help_page()?,
         "none" => display_help_page()?,
         _ => save_or_query_cmd(env::args().skip(1).collect())?,
@@ -27,15 +31,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
-    let client = redis::Client::open("redis://127.0.0.1/")?;
-    let mut _con = client.get_connection()?;
+    let client = memcache::connect(SOCKET).unwrap();
 
     let joined_args:String = args.join(" ");
 
-    let result: String = match redis::cmd("HGET").arg("cmd").arg(&joined_args).query(&mut _con) {
-        Ok(a) => a,
-        _ => format!("{}\n  {}\n{}\n", "KEY:".red().underline().bold(), &joined_args.bold(), "Not found in cache.".red().bold() )
-    };
+    let result: String = client.get(&joined_args).unwrap().expect("Key not found!");
 
     print!("{}", result);
 
@@ -44,13 +44,12 @@ fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
 fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
-    let client = redis::Client::open("redis://127.0.0.1/")?;
-    let mut _con = client.get_connection()?;
+    let client = memcache::connect(SOCKET).unwrap();
 
     let joined_args:String = args.join(" ");
 
 
-    let redis_result: Option<String> = redis::cmd("HGET").arg("cmd").arg(&joined_args).query(&mut _con)?;
+    let redis_result: Option<String> = client.get(&joined_args).unwrap();
 
     match redis_result {
         Some(a) => print!("{}", a),
@@ -63,15 +62,14 @@ fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>
 
 fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
-    let client = redis::Client::open("redis://127.0.0.1/")?;
-    let mut _con = client.get_connection()?;
+    let client = memcache::connect(SOCKET).unwrap();
 
     let joined_args = args.join(" ");
 
-    let output = Command::new(&args[0]).args(&args[1..])
+    let execute_command = Command::new(&args[0]).args(&args[1..])
         .output().expect("Could not execute redis-cli.");
 
-    let cmd_stdout: String = String::from_utf8_lossy(&output.stdout).to_string();
+    let cmd_stdout: String = String::from_utf8_lossy(&execute_command.stdout).to_string();
 
     eprintln!("{}{} writing {}{}{} to cache.", 
               "INFO".yellow().bold().underline(), ":".yellow().bold(), 
@@ -80,7 +78,9 @@ fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
               "\"".yellow().bold(),
               );
 
-    redis::cmd("HSET").arg("cmd").arg(joined_args).arg(cmd_stdout).execute(&mut _con);
+    //redis::cmd("HSET").arg("cmd").arg(joined_args).arg(cmd_stdout).execute(&mut _con);
+    client.set(&joined_args, cmd_stdout, 0);
+    
 
     std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
 

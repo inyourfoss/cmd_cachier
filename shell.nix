@@ -1,10 +1,16 @@
-{ pkgs ? import <nixpkgs> {} }:
-  pkgs.mkShell {
-    # nativeBuildInputs is usually what you want -- tools you need to run
-    nativeBuildInputs = with pkgs.buildPackages; [ 
-        gnumake
-        groff
-        cargo
-        rustc
+{...}:
+let
+
+  pkgs = import (fetchTarball("https://github.com/nixos/nixpkgs/tarball/master")) {};
+
+  # Rolling updates, not deterministic.
+  # pkgs = import (fetchTarball("channel:nixpkgs-unstable")) {};
+in pkgs.mkShell {
+  buildInputs = [ 
+      pkgs.cargo 
+      pkgs.rustc 
+      pkgs.pkg-config 
+      pkgs.openssl
+
     ];
 }
