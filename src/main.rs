@@ -1,11 +1,11 @@
 use std::env;
 use std::process::Command;
-use memcache;
+//use memcache;
 use redis;
 
 use colored::*;
 
-const MAX_CONNECTION_TIMEOUT: std::time::Duration = std::time::Duration::from_millis(4000); 
+//const MAX_CONNECTION_TIMEOUT: std::time::Duration = std::time::Duration::from_millis(4000); 
 const REDIS_READ_WRITE_LATENCY_IN_MS: std::time::Duration = std::time::Duration::from_millis(20); // needs to be adjusted on weak hardware
 
 fn sub_cmd() -> String {
@@ -61,20 +61,10 @@ fn start_server() -> bool {
 }
 
 fn server_is_running() -> bool {
-    //println!("Attempting connection...");
-    
-    /* Not needed for redis implementation because it has no noticable connection timeout.
-    std::thread::spawn (move || {
-        std::thread::sleep(MAX_CONNECTION_TIMEOUT);
-        println!("Connection timed out. Trying to start server...");
-        start_server();
-    });
-    */
+
     let dbg_socket :String = socket();
 
     let client = redis::Client::open(socket()).expect(format!("Connection string might be wrong.{dbg_socket}").as_str());
-
-    //println!("Attempting connection...");
 
     let result = match client.get_connection() {
         Ok(_) => true,
@@ -94,8 +84,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match sub_cmd().as_str() {
         "save" => save_cmd(cli_cmd(true))?,
         "query" => query_cmd(cli_cmd(true))?,
-    //    "info" => redis_info()?,;
-    //    "meminfo" => redis_meminfo()?,
+        "info" => redis_info()?,
+        "meminfo" => redis_meminfo()?,
         "help" => display_help_page()?,
         "none" => display_help_page()?,
         _ => save_or_query_cmd(cli_cmd(false))?,
