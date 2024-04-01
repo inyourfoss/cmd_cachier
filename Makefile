@@ -1,5 +1,7 @@
 build:
 	cargo build --release 
+run-build:
+	Makescripts/run-build.sh
 install:
 	@echo "Make sure $$HOME/.local/bin is in your PATH environment variable."
 	mkdir -p "$$HOME/.local/bin/"

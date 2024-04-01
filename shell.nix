@@ -11,6 +11,10 @@ in pkgs.mkShell {
       pkgs.rustc 
       pkgs.pkg-config 
       pkgs.openssl
+      pkgs.hyperfine
+      pkgs.memcached
+      pkgs.redis
+#      pkgs.rust-analyzer
 
     ];
 }
