@@ -1,5 +1,7 @@
 use std::env;
 use std::process::Command;
+use std::process::Stdio;
+use std::io::Write;
 //use memcache;
 use redis;
 
@@ -46,11 +48,45 @@ fn socket() -> String {
 fn start_server() -> bool {
     let socket = socket_no_prefix();
 
+        // Define the string to pass as stdin
+    let config_string = format!( r#"
+        port 0
+        daemonize yes
+        unixsocket {}
+        unixsocketperm 700
+        save ""
+        appendonly no
+        "#, socket);
+
+    let mut cmd = Command::new("redis-server")
+        .arg("-")
+        .stdin(Stdio::piped()) 
+        .spawn()
+        .expect("Failed to start the server.");
+    /*
     let _execute_command = Command::new("sh")
         .arg("-c")
         .arg(format!("printf 'daemonize yes\nport 0\nunixsocket {socket}\nunixsocketperm 700\nsave \"\"\nappendonly no\n' | redis-server -").as_str())
         .output()
         .expect("Failed to start the server.");
+    */
+
+    // Get a handle to stdin of the child process
+    let stdin = cmd.stdin.as_mut().expect("Failed to open stdin");
+
+    // Write the config string to the child process's stdin
+    stdin.write_all(config_string.as_bytes()).expect("Failed to write to stdin");
+
+    // Wait for the child process to finish
+    let status = cmd.wait().expect("Failed to wait for command");
+
+
+        // Check if the command was successful
+    if status.success() {
+        println!("Started server successfully.");
+    } else {
+        println!("Server failed with: {:?}", status.code());
+    }
 
     while ! (server_is_running()){
         println!("Waiting to connect to server...");
@@ -101,7 +137,7 @@ fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
     //
     println!("Querying...");
     let client = redis::Client::open(socket())?;
-    let mut _con = client.get_connection().expect("Could not establish connection.");
+    let mut _con = client.get_connection().expect("Could not establish connection. When querying");
 
     //let dbg_socket = socket();
     //println!("{dbg_socket}");
@@ -125,7 +161,7 @@ fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>
     
     //let client = memcache::connect(socket()).unwrap();
     let client = redis::Client::open(socket()).expect("Error: Socket not found");
-    let mut _con = client.get_connection().expect("Could not establish connection.");
+    let mut _con = client.get_connection().expect("Could not establish connection. When checking key.");
 
     let joined_args:String = args.join(" ");
 
