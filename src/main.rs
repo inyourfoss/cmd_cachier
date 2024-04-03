@@ -79,15 +79,16 @@ fn start_server() -> bool {
 
     // Check if the command was successful
     if status.success() {
-        println!("Started server successfully.");
+        eprintln!("Started server successfully.");
     } else {
-        println!("Server failed with: {:?}", status.code());
+        eprintln!("Server failed with: {:?}", status.code());
     }
 
     while ! (server_is_running()){
-        println!("Waiting to connect to server...");
+        eprint!("\rWaiting to connect to server...");
         std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
     }
+    println!("");
 
     return true;
 }
@@ -131,7 +132,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
-    println!("Querying...");
+    eprintln!("Querying...");
     let client = redis::Client::open(socket())?;
     let mut _con = client.get_connection().expect("Could not establish connection. When querying");
 
