@@ -33,7 +33,9 @@ fn socket_no_prefix() -> String {
     let os : &str = std::env::consts::OS;
     let runtime_dir : String = match os {
         "linux" => std::env::var("XDG_RUNTIME_DIR").expect("XDG_RUNTIME_DIR is not set."),
-        "macos" => "/tmp".to_string(),
+        "macos" => format!("{}/Library/Application Support",
+                           std::env::var("HOME").expect("HOMEDIR Is not set.")
+                           ),
         _ => panic!("Could not determine platform.")
     };
 
@@ -111,9 +113,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         start_server(); 
     }
 
+    let version = "0.3.0";
+
     match sub_cmd().as_str() {
         "save" => save_cmd(cli_cmd(true))?,
         "query" => query_cmd(cli_cmd(true))?,
+        "version" => println!("cmd_cachier version {version}"),
         "info" => redis_info()?,
         "meminfo" => redis_meminfo()?,
         "help" => display_help_page()?,
