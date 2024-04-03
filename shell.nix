@@ -12,6 +12,7 @@ in pkgs.mkShell {
       pkgs.pkg-config 
       pkgs.openssl
       pkgs.redis
+      pkgs.iconv
 
     ];
 }

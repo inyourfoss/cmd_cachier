@@ -54,7 +54,7 @@ fn start_server() -> bool {
     let config_string = format!( r#"
         port 0
         daemonize yes
-        unixsocket {}
+        unixsocket '{}'
         unixsocketperm 700
         save ""
         appendonly no
