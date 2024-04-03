@@ -1,7 +1,9 @@
-.Dd October 28, 2023
+.Dd April 03, 2024
 .Dt CMD_CACHIER 1
 .Os
+.Sh VERSION 0.3
 .Sh NAME
+.Nm cmd_cachier
 .Nm cmd_cachier
 .Nd A caching service for your cli commands using redis.
 .Sh SYNOPSIS
@@ -60,6 +62,7 @@ Try to query database. Returns empty string if not in db.
 Display memory usage of saved commands.
 .It Nm info
 Info about redis database.
+.El
 
 .Sh EXAMPLES
 Cache list of files in $HOME
@@ -93,9 +96,21 @@ Enforce refresh of the search on demand (alias with gpup):
 
 .Sh KNOWN BUGS
 .Pp
+Open:
+.Bl
+.It 
+None
+.El
+
 Resolved in 0.3:
- - Every now and then a dump.rdb is created in the current directory.
+.Bl
+.It 
+Every now and then a dump.rdb is created in the current directory.
+.El
 .Pp
+
+.Sh MANPAGE DOCUMENTATION
+https://man.openbsd.org/mdoc.7
 
 \".Sh COMPATIBILITY
 \".Sh STANDARDS
