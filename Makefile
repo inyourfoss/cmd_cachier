@@ -1,7 +1,5 @@
 build:
 	cargo build --release 
-run-build:
-	Makescripts/run-build.sh
 install:
 	@echo "Make sure $$HOME/.local/bin is in your PATH environment variable."
 	mkdir -p "$$HOME/.local/bin/"
@@ -23,6 +21,10 @@ documentation:
 	asciidoctor-pdf -b pdf docs/cmd_cachier.1.adoc --out-file docs/cmd_cachier.1.pdf
 	asciidoctor -b manpage docs/cmd_cachier.1.adoc --out-file man/man1/cmd_cachier.1
 	asciidoctor -b html5 docs/cmd_cachier.1.adoc --out-file docs/cmd_cachier.1.html
-prep-release:
-	python3 scripts/prep_release.py > default.nix
-	
+release:
+	python3 scripts/prep_release.py > default.nix # Update commit hash and versionnumber.
+	cargo build --release
+publish:
+	python3 scripts/prep_release.py > default.nix # Update commit hash and versionnumber.
+	cargo build --release
+	CARGO_REGISTRY_TOKEN="123" cargo publish
