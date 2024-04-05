@@ -21,7 +21,7 @@ Now every user has their own redis process.
 
 That process is spawned once you use the cmd_cachier command the first time since reboot. From then on it keeps running in the background.
 
-Also now the redis listens on a unix domain socket instead of TCP(I think?). 
+Also now the redis instance listens on a unix domain socket instead of TCP(I think?). 
 The socket is in a user owned directory and is only readable by the user.
 Which should increase security quite a bit. 
 But still, please don't put your passwords in the cache!
