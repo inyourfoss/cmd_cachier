@@ -19,7 +19,7 @@ systemuninstall:
 	rm -f "/usr/bin/cmd_cachier"
 	rm -f "/usr/share/man/man1/cmd_cachier*"
 documentation:
-	#groff -m doc -T pdf < man/man1/cmd_cachier.1 > docs/cmd_cachier.1.pdf
-	asciidoctor-pdf -b pdf docs/cmd_cachier.1.adoc --out-file docs/cmd_cachier.1.pdf
-	asciidoctor -b manpage docs/cmd_cachier.1.adoc --out-file man/man1/cmd_cachier.1.auto
-	asciidoctor -b html5 docs/cmd_cachier.1.adoc --out-file docs/cmd_cachier.1.html
+	python3 scripts/prep_docs.py > docs/cmd_cachier.1.adoc.auto
+	asciidoctor-pdf -b pdf docs/cmd_cachier.1.adoc.auto --out-file docs/cmd_cachier.1.pdf
+	asciidoctor -b manpage docs/cmd_cachier.1.adoc.auto --out-file man/man1/cmd_cachier.1
+	asciidoctor -b html5 docs/cmd_cachier.1.adoc.auto --out-file docs/cmd_cachier.1.html

@@ -1,117 +1,216 @@
-.Dd April 03, 2024
-.Dt CMD_CACHIER 1
-.Os
-.Sh VERSION 0.3
-.Sh NAME
-.Nm cmd_cachier
-.Nm cmd_cachier
-.Nd A caching service for your cli commands using redis.
-.Sh SYNOPSIS
-.Nm cmd_cachier
-.Ar SUBCOMMAND 
-.Op YOUR_COMMAND
-.Nm cmd_cachier
-.Ar YOUR_COMMAND...
-
-
-.Sh PREREQUESITES
-Redis must be installed via your package manager of choice.
-And it musst be in your path variable.
-Check if can run redis-server from the commandline.
-
-.Pp
-.Nm Installation example: MacOS(homebrew)
-.Pp
-.Dl $ brew install redis
-.Pp
-
-.Sh DESCRIPTION
-.Ar TODO:
-Add description
-
-.Pp
-The db state is preserved throughout a desktop session as redis is an in memory database.
-To keep commands refreshed you can manually execute your command with the 
-.Nm save
-subcommand.
-Or you could refresh it programatically via systemd timers or crontab (man crontab).
-.Nm crontab
-.Pp
+'\" t
+.\"     Title: cmd_cachier
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.20
+.\"      Date: 2024-05-03
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "CMD_CACHIER" "1" "2024-05-03" "\ \&" "\ \&"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+cmd_cachier \- A caching service for your CLI commands using Redis.
+.SH "SYNOPSIS"
+.sp
+\fBcmd_cachier\fP \*(AqSUBCOMMAND\*(Aq [\*(AqYOUR_COMMAND\*(Aq]...
+.sp
+\fBcmd_cachier\fP [\*(AqYOUR_COMMAND\*(Aq]...
+.SH "PREREQUISITES"
+.sp
+Redis must be installed via your package manager of choice and must be in your PATH variable. Check if you can run \f(CRredis\-server\fP from the command line.
+.sp
+.B Example: Installation on MacOS (homebrew)
+.br
+.sp
+.if n .RS 4
+.nf
+.fam C
+$ brew install redis
+.fam
+.fi
+.if n .RE
+.SH "DESCRIPTION"
+.sp
+The database state is preserved throughout a desktop session as Redis is an in\-memory database. To keep commands refreshed, you can manually execute your command with the \f(CRsave\fP subcommand, or you could refresh it programmatically via systemd timers or crontab (see \f(CRman crontab\fP).
+.sp
+\f(CRcrontab\fP example:
+.sp
 Run:
-.Dl $ crontab -e
-.Pp
+.sp
+.if n .RS 4
+.nf
+.fam C
+$ crontab \-e
+.fam
+.fi
+.if n .RE
+.sp
 Add the line for an update every minute:
-.Pp
-.Dl * * * * * cmd_cache save YOUR_COMMAND
-.Pp
+.sp
+.if n .RS 4
+.nf
+.fam C
+* * * * * cmd_cachier save YOUR_COMMAND
+.fam
+.fi
+.if n .RE
+.sp
 Or every 5 minutes:
-.Pp
-.Dl */5 * * * * cmd_cache save YOUR_COMMAND
-.Pp
-
-TODO: systemd timer documentation
-
-.Sh SUBCOMMANDS
+.sp
+.if n .RS 4
+.nf
+.fam C
+*/5 * * * * cmd_cachier save YOUR_COMMAND
+.fam
+.fi
+.if n .RE
+.SH "SUBCOMMANDS"
+.sp
 The following subcommands are available:
-.Bl -tag -width indent
-.It Nm save Ar YOUR_COMMAND...
+.sp
+\f(CRsave\fP [YOUR_COMMAND]...
+.RS 4
 Save command to database in any case. Will overwrite if already in db.
-.It Nm query Ar YOUR_COMMAND...
+.RE
+.sp
+\f(CRquery\fP [YOUR_COMMAND]...
+.RS 4
 Try to query database. Returns empty string if not in db.
-.It Nm memory
+.RE
+.sp
+\f(CRmemory\fP
+.RS 4
 Display memory usage of saved commands.
-.It Nm info
-Info about redis database.
-.El
-
-.Sh EXAMPLES
-Cache list of files in $HOME
-.Pp
-.Dl $ cmd_cachier ls -1 "$HOME"
-.Pp
-Cache list of git projects
-.Pp
-.Dl $ cmd_cachier fd --glob .git --hidden --type d --max-depth 6 --prune
-.Pp
-Additionally remove the .git folders from the path:
-.Pp
-.Dl $ cmd_cachier fd --glob .git --hidden --type d --max-depth 6 --prune | while read -r line;do tmp="${line%/}";echo "${tmp%/*}";done
-.Pp
-With fzf:
-.Pp
-.Dl $ cmd_cachier fd . --type d --max-depth 5 --hidden "$HOME" | fzf
-.Pp
-
-.Sh TIPS AND TRICKS
-Alias gp to cd into a selected git project in the example above.
-
-In your .bashrc:
-.Pp
-.Dl alias gp='cd "$(cmd_cachier YOUR_SEARCH_COMMAND | fzf)"'
-.Pp
-Enforce refresh of the search on demand (alias with gpup):
-.Pp
-.Dl alias gpup='cd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"'
-.Pp
-
-.Sh KNOWN BUGS
-.Pp
-Open:
-.Bl
-.It 
+.RE
+.sp
+\f(CRinfo\fP
+.RS 4
+Info about the Redis database.
+.RE
+.SH "EXAMPLES"
+.sp
+Cache list of files in \f(CR$HOME\fP:
+.sp
+.if n .RS 4
+.nf
+.fam C
+$ cmd_cachier ls \-1 "$HOME"
+.fam
+.fi
+.if n .RE
+.sp
+Cache list of git projects:
+.sp
+.if n .RS 4
+.nf
+.fam C
+$ cmd_cachier fd \-\-glob .git \-\-hidden \-\-type d \-\-max\-depth 6 \-\-prune
+.fam
+.fi
+.if n .RE
+.sp
+Additionally, remove the \f(CR.git\fP folders from the path:
+.sp
+.if n .RS 4
+.nf
+.fam C
+$ cmd_cachier fd \-\-glob .git \-\-hidden \-\-type d \-\-max\-depth 6 \-\-prune | while read \-r line; do tmp="${line%/}"; echo "${tmp%/*}"; done
+.fam
+.fi
+.if n .RE
+.sp
+With \f(CRfzf\fP:
+.sp
+.if n .RS 4
+.nf
+.fam C
+$ cmd_cachier fd . \-\-type d \-\-max\-depth 5 \-\-hidden "$HOME" | fzf
+.fam
+.fi
+.if n .RE
+.SH "TIPS AND TRICKS"
+.sp
+Alias \f(CRgp\fP to \f(CRcd\fP into a selected git project in the example above.
+.sp
+In your \f(CR.bashrc\fP:
+.sp
+.if n .RS 4
+.nf
+.fam C
+alias gp=\*(Aqcd "$(cmd_cachier YOUR_SEARCH_COMMAND | fzf)"\*(Aq
+.fam
+.fi
+.if n .RE
+.sp
+Enforce refresh of the search on demand (alias with \f(CRgpup\fP):
+.sp
+.if n .RS 4
+.nf
+.fam C
+alias gpup=\*(Aqcd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"\*(Aq
+.fam
+.fi
+.if n .RE
+.SH "KNOWN BUGS"
+.sp
+Open
+.RS 4
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
 None
-.El
-
-Resolved in 0.3:
-.Bl
-.It 
-Every now and then a dump.rdb is created in the current directory.
-.El
-.Pp
-
-.Sh MANPAGE DOCUMENTATION
-https://man.openbsd.org/mdoc.7
-
-\".Sh COMPATIBILITY
-\".Sh STANDARDS
-\".Sh ENVIRONMENT
+.RE
+.RE
+.sp
+Resolved in 0.3
+.RS 4
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+Every now and then a \f(CRdump.rdb\fP is created in the current directory.
+.RE
+.RE
+.SH "EXTERNAL LINKS"
+.sp
+.B manpages (mdoc macros)
+.br
+.URL "https://man.openbsd.org/mdoc.7" "" ""
+.sp
+.B manpages (man macros)
+.br
+.URL "https://manpages.ubuntu.com/manpages/trusty/man7/groff_man.7.html" "" ""
+.sp
+.B asciidoc/tor
+.br
+.URL "https://docs.asciidoctor.org/asciidoc/latest/syntax\-quick\-reference/" "" ""

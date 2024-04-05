@@ -35,15 +35,17 @@ My thanks go out to the redis team and the contributors behind [redis-rs](https:
 ## Dependencies
 ### Runtime
 - `redis`
-### Build
-- `cargo` with rustc (oldest tested version is 1.68)
-  - `colored` library (automatically pulled by cargo)
+### Build (cmd_cachier)
+- `cargo` with rustc (oldest tested version is rustc 1.68)
+  - `colored` 2.0.4 library (automatically pulled by cargo)
   - `redis-rs` library (automatically pulled by cargo)
   - `Command` library (automatically pulled by cargo)
 - `make` or `gnumake` usually already installed
+### Build (docs)
+- `asciidoctor` - the manpage is authored in asciidoc
+- `python` 3.11 or greater - for some templating (versioning, dates, etc.)
 ### Optional
 - `man` usually already installed
-- `groff` usually already installed
 
 ## Via GitLab
 Clone repo:
@@ -73,11 +75,11 @@ As of now the man page will not work as it is only a user space install.
 cargo install cmd_cachier
 ```
 ## Usage
-See manpage [here](https://gitlab.com/inyourfoss/cmd_cachier/-/blob/main/docs/cmd_cachier.1.pdf?ref_type=heads))
+See manpage [here](https://gitlab.com/inyourfoss/cmd_cachier/-/blob/main/docs/cmd_cachier.1.pdf?ref_type=heads)
 
 ## Setting up Redis
 ### Note
-As of Version 0.3.0 redis does need further setup apart from installing it.
+As of Version 0.3.0 redis does **not** need further setup apart from installing it.
 `cmd_cachier` can now spawn its own redis process wich is user specific.
 It will launch the redis instance in the background 
 the first time you use `cmd_cachier <ANY_COMMAND>` if it is not already running.
