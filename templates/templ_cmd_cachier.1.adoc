@@ -28,7 +28,14 @@ $ brew install redis
 
 // TODO: Add description
 
-The database state is preserved throughout a desktop session as Redis is an in-memory database. To keep commands refreshed, you can manually execute your command with the `save` subcommand, or you could refresh it programmatically via systemd timers or crontab (see `man crontab`).
+`cmd_cachier` saves the stdout of your cli commands like `find` or `fd`.
+If the command is not in the cache the command will execute in about the time it would take without `cmd_cachier`.
+The next time you use the command with `cmd_cachier` the console output should feel instantanious.
+
+Also the lifetime of the cache is only as long as the machine runs. Meaning after a reboot it is cleared.
+
+To keep commands refreshed, you can manually execute your command with the `save` subcommand, 
+or you could refresh it programmatically via systemd timers or crontab (see `man crontab`).
 
 `crontab` example:
 
@@ -111,11 +118,14 @@ alias gpup='cd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"'
 
 == KNOWN BUGS
 
-Open::
-* None
+[cols="1,1"]
+|===
+|Status|Bug
 
-Resolved in 0.3::
-* Every now and then a `dump.rdb` is created in the current directory.
+|Resolved in 0.3
+|Every now and then a `dump.rdb` is created in the current directory.
+|===
+
 
 == EXTERNAL LINKS
 .manpages (mdoc macros)

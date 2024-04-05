@@ -50,7 +50,14 @@ $ brew install redis
 .if n .RE
 .SH "DESCRIPTION"
 .sp
-The database state is preserved throughout a desktop session as Redis is an in\-memory database. To keep commands refreshed, you can manually execute your command with the \f(CRsave\fP subcommand, or you could refresh it programmatically via systemd timers or crontab (see \f(CRman crontab\fP).
+\f(CRcmd_cachier\fP saves the stdout of your cli commands like \f(CRfind\fP or \f(CRfd\fP.
+If the command is not in the cache the command will execute in about the time it would take without \f(CRcmd_cachier\fP.
+The next time you use the command with \f(CRcmd_cachier\fP the console output should feel instantanious.
+.sp
+Also the lifetime of the cache is only as long as the machine runs. Meaning after a reboot it is cleared.
+.sp
+To keep commands refreshed, you can manually execute your command with the \f(CRsave\fP subcommand,
+or you could refresh it programmatically via systemd timers or crontab (see \f(CRman crontab\fP).
 .sp
 \f(CRcrontab\fP example:
 .sp
@@ -171,36 +178,25 @@ alias gpup=\*(Aqcd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"\*(Aq
 .fi
 .if n .RE
 .SH "KNOWN BUGS"
+.TS
+allbox tab(:);
+lt lt.
+T{
 .sp
-Open
-.RS 4
+Status
+T}:T{
 .sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.  sp -1
-.  IP \(bu 2.3
-.\}
-None
-.RE
-.RE
+Bug
+T}
+T{
 .sp
 Resolved in 0.3
-.RS 4
+T}:T{
 .sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.  sp -1
-.  IP \(bu 2.3
-.\}
 Every now and then a \f(CRdump.rdb\fP is created in the current directory.
-.RE
-.RE
+T}
+.TE
+.sp
 .SH "EXTERNAL LINKS"
 .sp
 .B manpages (mdoc macros)
