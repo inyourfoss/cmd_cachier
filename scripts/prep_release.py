@@ -10,7 +10,7 @@ from string import Template
 with open("Cargo.toml", "rb") as f:
     proj_data = tomllib.load(f)
 
-with open("default.nix.templ", "r") as f:
+with open("templates/templ_default.nix", "r") as f:
     buildfile = f.read()
 
 metadata = {

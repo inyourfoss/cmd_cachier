@@ -8,7 +8,7 @@ from string import Template
 with open("Cargo.toml", "rb") as f:
     proj_data = tomllib.load(f)
 
-with open("docs/cmd_cachier.1.adoc", "r") as f:
+with open("templates/templ_cmd_cachier.1.adoc", "r") as f:
     docfile = f.read()
 
 metadata = {

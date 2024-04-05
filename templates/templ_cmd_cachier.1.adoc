@@ -2,10 +2,10 @@
 :doctype: manpage
 :man-source: cmd_cachier 0.3
 :man-manual: CMD_CACHIER Manual
-:docdate: 2024-04-05
-:docdatetime: 2024-04-05 14:00:30
-:revdate: 2024-04-05
-:revnumber: 0.3.1
+:docdate: ${date}
+:docdatetime: ${timestamp}
+:revdate: ${date}
+:revnumber: ${version}
 :page-layout: base
 
 == NAME
@@ -132,5 +132,4 @@ https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 // ".SH COMPATIBILITY
 // ".SH STANDARDS
 // ".SH ENVIRONMENT
-
 
