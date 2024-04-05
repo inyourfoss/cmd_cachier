@@ -24,5 +24,3 @@ documentation:
 release:
 	python3 scripts/prep_release.py > default.nix # Update commit hash and versionnumber.
 	cargo build --release
-publish:
-	CARGO_REGISTRY_TOKEN="$(sh cargo_accesstoken)" cargo publish
