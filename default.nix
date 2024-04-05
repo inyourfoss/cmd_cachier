@@ -8,7 +8,7 @@ pkgs.rustPlatform.buildRustPackage rec {
 
     src = fetchGit {
         url = "https://gitlab.com/inyourfoss/cmd_cachier.git";
-        rev = "88010f83f56f6520aabcd6da7bd354c79ed0fb44";
+        rev = "dfd9b18981f256f13532feb067a40fee3793d1bf";
     };
 
   cargoLock = {

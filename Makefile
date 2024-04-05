@@ -25,6 +25,4 @@ release:
 	python3 scripts/prep_release.py > default.nix # Update commit hash and versionnumber.
 	cargo build --release
 publish:
-	python3 scripts/prep_release.py > default.nix # Update commit hash and versionnumber.
-	cargo build --release
 	CARGO_REGISTRY_TOKEN="123" cargo publish
