@@ -14,5 +14,6 @@ in pkgs.mkShell {
       pkgs.redis
       pkgs.iconv
       pkgs.asciidoctor
+      pkgs.python311
     ];
 }
