@@ -4,11 +4,11 @@
 }:
 pkgs.rustPlatform.buildRustPackage rec {
   name = "cmd_cachier";
-  version = "0.3.0";
+  version = "0.3.1";
 
     src = fetchGit {
         url = "https://gitlab.com/inyourfoss/cmd_cachier.git";
-        rev = "08813e351d9781d288e7729db0cf6b54669b9495";
+        rev = "xxx 08813e351d9781d288e7729db0cf6b54669b9495";
     };
 
   cargoLock = {

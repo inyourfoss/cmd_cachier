@@ -114,7 +114,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         start_server(); 
     }
 
-    let version = "0.3.0";
+    let version = "0.3.1";
 
     match sub_cmd().as_str() {
         "save" => save_cmd(cli_cmd(true))?,

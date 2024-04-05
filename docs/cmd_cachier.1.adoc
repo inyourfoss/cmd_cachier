@@ -1,0 +1,135 @@
+= cmd_cachier(1)
+:doctype: manpage
+:man-source: cmd_cachier 0.3
+:man-manual: CMD_CACHIER Manual
+:page-layout: base
+:revdate: 2024-04-03
+
+== VERSION
+0.3
+
+== NAME
+cmd_cachier - A caching service for your CLI commands using Redis.
+
+== SYNOPSIS
+*cmd_cachier* 'SUBCOMMAND' ['YOUR_COMMAND']...
+
+*cmd_cachier* ['YOUR_COMMAND']...
+
+== PREREQUISITES
+Redis must be installed via your package manager of choice and must be in your PATH variable. Check if you can run `redis-server` from the command line.
+
+.Example: Installation on MacOS (homebrew)
+----
+$ brew install redis
+----
+
+== DESCRIPTION
+
+// TODO: Add description
+
+The database state is preserved throughout a desktop session as Redis is an in-memory database. To keep commands refreshed, you can manually execute your command with the `save` subcommand, or you could refresh it programmatically via systemd timers or crontab (see `man crontab`).
+
+`crontab` example:
+
+Run:
+
+----
+$ crontab -e
+----
+
+Add the line for an update every minute:
+
+----
+* * * * * cmd_cachier save YOUR_COMMAND
+----
+
+Or every 5 minutes:
+
+----
+*/5 * * * * cmd_cachier save YOUR_COMMAND
+----
+
+// TODO: Add systemd timer documentation
+
+== SUBCOMMANDS
+The following subcommands are available:
+
+`save` [YOUR_COMMAND]...::
+    Save command to database in any case. Will overwrite if already in db.
+
+`query` [YOUR_COMMAND]...::
+    Try to query database. Returns empty string if not in db.
+
+`memory`::
+    Display memory usage of saved commands.
+
+`info`::
+    Info about the Redis database.
+
+== EXAMPLES
+
+Cache list of files in `$HOME`:
+
+----
+$ cmd_cachier ls -1 "$HOME"
+----
+
+Cache list of git projects:
+
+----
+$ cmd_cachier fd --glob .git --hidden --type d --max-depth 6 --prune
+----
+
+Additionally, remove the `.git` folders from the path:
+
+----
+$ cmd_cachier fd --glob .git --hidden --type d --max-depth 6 --prune | while read -r line; do tmp="${line%/}"; echo "${tmp%/*}"; done
+----
+
+With `fzf`:
+
+----
+$ cmd_cachier fd . --type d --max-depth 5 --hidden "$HOME" | fzf
+----
+
+== TIPS AND TRICKS
+
+Alias `gp` to `cd` into a selected git project in the example above.
+
+In your `.bashrc`:
+
+----
+alias gp='cd "$(cmd_cachier YOUR_SEARCH_COMMAND | fzf)"'
+----
+
+Enforce refresh of the search on demand (alias with `gpup`):
+
+----
+alias gpup='cd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"'
+----
+
+== KNOWN BUGS
+
+Open::
+* None
+
+Resolved in 0.3::
+* Every now and then a `dump.rdb` is created in the current directory.
+
+== EXTERNAL LINKS
+.manpages (mdoc macros)
+https://man.openbsd.org/mdoc.7
+
+.manpages (man macros)
+https://manpages.ubuntu.com/manpages/trusty/man7/groff_man.7.html
+
+.asciidoc/tor
+https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+
+// The commented sections could be added or expanded upon as needed.
+// ".SH COMPATIBILITY
+// ".SH STANDARDS
+// ".SH ENVIRONMENT
+

@@ -1,4 +1,7 @@
 target
 Cargo.lock
 result
+docs/**/*.html
+docs/**/*.pdf
+man/*
 
