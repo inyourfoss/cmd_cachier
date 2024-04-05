@@ -4,4 +4,6 @@ result
 docs/**/*.html
 docs/**/*.pdf
 man/*
-
+.idea
+.asciidoctorconfig.adoc
+.project

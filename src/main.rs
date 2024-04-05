@@ -10,6 +10,7 @@ use redis;
 use colored::*;
 
 const REDIS_READ_WRITE_LATENCY_IN_MS: std::time::Duration = std::time::Duration::from_millis(20); // needs to be adjusted on weak hardware
+const VERSION: Option<&str> = option_env!("CARGO_PKG_VERSION"); // https://stackoverflow.com/questions/27840394/how-can-a-rust-program-access-metadata-from-its-cargo-package
 
 fn sub_cmd() -> String {
     match env::args().nth(1) {
@@ -114,7 +115,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         start_server(); 
     }
 
-    let version = "0.3.1";
+    let version = VERSION.unwrap_or("unknown");
 
     match sub_cmd().as_str() {
         "save" => save_cmd(cli_cmd(true))?,

@@ -2,11 +2,11 @@
 :doctype: manpage
 :man-source: cmd_cachier 0.3
 :man-manual: CMD_CACHIER Manual
+:docdate: 2024-05-03
+:docdatetime: 2024-05-04 10:10:00 UTC
+:revdate: 2024-05-03
+:revnumber: 0.3.1
 :page-layout: base
-:revdate: 2024-04-03
-
-== VERSION
-0.3
 
 == NAME
 cmd_cachier - A caching service for your CLI commands using Redis.

@@ -13,6 +13,6 @@ in pkgs.mkShell {
       pkgs.openssl
       pkgs.redis
       pkgs.iconv
-      pkgs.asciidoc
+      pkgs.asciidoctor
     ];
 }
