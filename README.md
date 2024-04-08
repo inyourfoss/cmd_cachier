@@ -11,6 +11,11 @@ It is basically a light wrapper around redis (an in-memory database) where the c
 [Manpage](https://cmd-cachier-inyourfoss-7e6ece76159a67277db29221cf93ca6439e1ff91.gitlab.io/)
 
 # Announcements
+## About: Redis license change
+As redis has changed it's license and will not be included in most popular linux distros anymore.
+I have been testing out KeyDB and ValKey which are forks and/or are redis compatible.
+I have found that redis-rs still works well with either of these backends so once these packages start hitting official repos I will start supporting one or both of these backends.
+
 ## 0.3 Release
 
 This release features a configureless usage. You only have to make sure redis is installed.
