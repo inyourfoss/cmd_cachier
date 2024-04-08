@@ -1,7 +1,10 @@
 target
 Cargo.lock
 result
-docs/*
+*.pdf
+*.html
+docs/**/*.pdf
+docs/**/*.html
 man/*
 .idea
 .asciidoctorconfig.adoc

@@ -2,12 +2,12 @@
 .\"     Title: cmd_cachier
 .\"    Author: [see the "AUTHOR(S)" section]
 .\" Generator: Asciidoctor 2.0.20
-.\"      Date: 2024-04-05
+.\"      Date: 2024-04-09
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "CMD_CACHIER" "1" "2024-04-05" "\ \&" "\ \&"
+.TH "CMD_CACHIER" "1" "2024-04-09" "\ \&" "\ \&"
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .ss \n[.ss] 0
@@ -177,7 +177,7 @@ alias gpup=\*(Aqcd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"\*(Aq
 .fam
 .fi
 .if n .RE
-.SH "KNOWN BUGS"
+.SH "KNOWN BUGS AND ISSUES"
 .TS
 allbox tab(:);
 lt lt.
@@ -194,6 +194,20 @@ Resolved in 0.3
 T}:T{
 .sp
 Every now and then a \f(CRdump.rdb\fP is created in the current directory.
+T}
+T{
+.sp
+Open
+T}:T{
+.sp
+Man page not availablein non\-system installs and cargo installs. (Only help page.)
+T}
+T{
+.sp
+Open (planned for 0.3.x or the next 0.4 release)
+T}:T{
+.sp
+Can only use the "redis\-server" backend. Choosing "valkey" or "KeyDB" as backend is not supported yet.
 T}
 .TE
 .sp
