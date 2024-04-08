@@ -1,2 +1,5 @@
+#!/usr/bin/env sh
 
-asciidoctor -b docbook --out-file - templates/templ_readme.adoc | pandoc -f docbook -t markdown_strict -o - 
+# convert adoc to docbook as intermediate format
+asciidoctor -b docbook5  "$1" --out-file - | \
+    pandoc -f docbook -t markdown_strict -o -  # finally convert docbook to markdown to stdout

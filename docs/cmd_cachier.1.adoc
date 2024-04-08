@@ -5,9 +5,9 @@
 :man-source: cmd_cachier 0.3
 :man-manual: CMD_CACHIER Manual
 :docdate: 2024-04-09
-:docdatetime: 2024-04-09 00:31:18
+:docdatetime: 2024-04-09 01:11:05
 :revdate: 2024-04-09
-:revnumber: 0.3.1
+:revnumber: 0.3.2
 :page-layout: base
 //1}}}
 
