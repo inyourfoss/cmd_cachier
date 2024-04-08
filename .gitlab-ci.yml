@@ -2,6 +2,7 @@
 image: asciidoctor/docker-asciidoctor:1.69
 pages:
   script:
+    - make documentation
     - asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html
   artifacts:
     paths:

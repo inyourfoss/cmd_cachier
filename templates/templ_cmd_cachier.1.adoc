@@ -1,4 +1,6 @@
 = cmd_cachier(1)
+// FOLD: Metadata
+//{{{1
 :doctype: manpage
 :man-source: cmd_cachier 0.3
 :man-manual: CMD_CACHIER Manual
@@ -7,6 +9,7 @@
 :revdate: ${date}
 :revnumber: ${version}
 :page-layout: base
+//1}}}
 
 == NAME
 cmd_cachier - A caching service for your CLI commands using Redis.
@@ -116,14 +119,20 @@ Enforce refresh of the search on demand (alias with `gpup`):
 alias gpup='cd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"'
 ----
 
-== KNOWN BUGS
+== KNOWN BUGS AND ISSUES
 
-[cols="1,1"]
+[cols="1,3"]
 |===
 |Status|Bug
 
 |Resolved in 0.3
 |Every now and then a `dump.rdb` is created in the current directory.
+
+|Open
+|Man page not availablein non-system installs and cargo installs. (Only help page.)
+
+|Open (planned for 0.3.x or the next 0.4 release)
+|Can only use the "redis-server" backend. Choosing "valkey" or "KeyDB" as backend is not supported yet.
 |===
 
 

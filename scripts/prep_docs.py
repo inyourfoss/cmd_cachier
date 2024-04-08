@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import tomllib
 
 from datetime import datetime, date

@@ -5,9 +5,7 @@ install:
 	mkdir -p "$$HOME/.local/bin/"
 	cp ./target/release/cmd_cachier "$$HOME"/.local/bin/cmd_cachier
 uninstall:
-	@echo "Make sure $$HOME/.local/bin is in your PATH environment variable."
-	mkdir -p "$$HOME/.local/bin/"
-	cp ./target/release/cmd_cachier "$$HOME"/.local/bin/cmd_cachier
+	[ -f "$$HOME"/.local/bin/cmd_cachier ] && rm -f "$$HOME"/.local/bin/cmd_cachier || echo "cmd_cachier not in ~/.local/bin/ exiting.."
 systeminstall:
 	mkdir -p /usr/share/man/man1
 	cp ./target/release/cmd_cachier "/usr/bin/"
