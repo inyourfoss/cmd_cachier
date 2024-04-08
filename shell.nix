@@ -15,5 +15,6 @@ in pkgs.mkShell {
       pkgs.iconv
       pkgs.asciidoctor
       pkgs.python311
+      pkgs.hyperfine
     ];
 }
