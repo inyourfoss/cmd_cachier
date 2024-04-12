@@ -7,7 +7,7 @@ where the command itself is the key and the output is the value.
 
 # Documentation
 
-[Manpage](https://cmd-cachier-inyourfoss-7e6ece76159a67277db29221cf93ca6439e1ff91.gitlab.io/)
+[Manpage](https://inyourfoss.gitlab.io/cmd_cachier)
 
 # Announcements
 
@@ -40,7 +40,7 @@ still, please don’t put your passwords in the cache!
 
 I am happy how this release has turned out and hope you like it too!
 Make sure to see the examples in the
-[docs](https://cmd-cachier-inyourfoss-7e6ece76159a67277db29221cf93ca6439e1ff91.gitlab.io/).
+[docs](https://inyourfoss.gitlab.io/cmd_cachier).
 
 My thanks go out to the redis team and the contributors behind
 [redis-rs](https://crates.io/teams/github:redis-rs:release-team)!
