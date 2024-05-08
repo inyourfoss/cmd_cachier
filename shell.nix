@@ -7,7 +7,10 @@ let
   # pkgs = import (fetchTarball("channel:nixpkgs-unstable")) {};
 in pkgs.mkShell {
   buildInputs = [ 
+      pkgs.cargo-deny
+      pkgs.rustfmt
       pkgs.cargo 
+      pkgs.clippy
       pkgs.rustc 
       pkgs.pkg-config 
       pkgs.openssl

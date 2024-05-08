@@ -5,7 +5,7 @@ use std::process::Command;
 use std::process::Stdio;
 use std::io::Write;
 
-use redis;
+//use redis;
 
 use colored::*;
 
@@ -36,7 +36,7 @@ fn socket_no_prefix() -> String {
         "linux" => std::env::var("XDG_RUNTIME_DIR").expect("XDG_RUNTIME_DIR is not set."),
         "macos" => format!("{}/Library/Application Support",
                            std::env::var("HOME").expect("HOMEDIR Is not set.")
-                           ),
+                          ),
         _ => panic!("Could not determine platform.")
     };
 
@@ -51,7 +51,7 @@ fn socket() -> String {
 fn start_server() -> bool {
     let socket = socket_no_prefix();
 
-        // Define the string to pass as stdin
+    // Define the string to pass as stdin
     let config_string = format!( r#"
         port 0
         daemonize yes
@@ -89,23 +89,21 @@ fn start_server() -> bool {
         eprint!("\rWaiting to connect to server...");
         std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
     }
-    println!("");
+    println!();
 
-    return true;
+    true
 }
 
 fn server_is_running() -> bool {
 
     let dbg_socket :String = socket();
 
-    let client = redis::Client::open(socket()).expect(format!("Connection string might be wrong.{dbg_socket}").as_str());
+    let error_message :String = format!("Connection string might be wrong.{dbg_socket}");
 
-    let result = match client.get_connection() {
-        Ok(_) => true,
-        Err(_) => false
-    };
+    let client = redis::Client::open(socket()).expect(&error_message);
 
-    return result;
+
+    client.get_connection().is_ok() as bool
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -152,7 +150,7 @@ fn query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn save_or_query_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
-    
+
     let client = redis::Client::open(socket()).expect("Error: Socket not found");
     let mut _con = client.get_connection().expect("Could not establish connection. When checking key.");
 
@@ -189,7 +187,7 @@ fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
               );
 
     redis::cmd("HSET").arg("cmd").arg(joined_args).arg(cmd_stdout).execute(&mut _con);
-    
+
     //TODO: Implement while loop key is not in cache.
     std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
 
@@ -203,10 +201,10 @@ fn redis_info() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open(socket())?;
     let mut _con = client.get_connection()?;
 
-    
+
     let response: String = redis::cmd("INFO").arg("MEMORY").query(&mut _con)?;
-    let result_list: Vec<&str> = response.split("\n").collect();
-    
+    let result_list: Vec<&str> = response.split('\n').collect();
+
     println!("{}", "REDIS MEMORY INFO:".yellow().bold().underline());
     for result in result_list {
         if result.contains("human") {
@@ -220,7 +218,7 @@ fn redis_info() -> Result<(), Box<dyn std::error::Error>> {
 fn redis_meminfo() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open(socket())?;
     let mut _con = client.get_connection()?;
-    
+
     let response :f64 = redis::cmd("MEMORY").arg("USAGE").arg("cmd").query(&mut _con)?;
     let conversion_number: f64 = 1024.0;
     let mem_usage_kb: f64 = response/(conversion_number);
@@ -234,7 +232,7 @@ fn redis_meminfo() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn display_help_page() -> Result<(), Box<dyn std::error::Error>> {
-//    eprintln!("{}", "Success!".green().underline().bold());
+    //    eprintln!("{}", "Success!".green().underline().bold());
     let help_page = r#"cmd_cachier help page
 
 USAGE
