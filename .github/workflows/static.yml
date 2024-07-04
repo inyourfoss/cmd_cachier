@@ -23,26 +23,30 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     container: asciidoctor/docker-asciidoctor:1.69
 
-    steps:    
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      # Runs a set of commands using the runners shell
+    steps:
+          # Runs a set of commands using the runners shell
       - name: build documentation
         run: |
           apk add pandoc
           make documentation
           asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html
-          
+  
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
+    steps:    
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
