@@ -25,9 +25,12 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
-  build:
+  publish_docs:
     runs-on: ubuntu-latest
-    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      
     steps:
       - uses: cachix/install-nix-action@v27
       - name: Checkout
@@ -38,7 +41,18 @@ jobs:
           # apk add pandoc
           time nix-shell --run "make documentation" ./docs.shell.nix
           # asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html
-
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public/artifact'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
       #- name: Archive public folder
       #  uses: actions/upload-artifact@v4
       #  with:
