@@ -27,8 +27,7 @@ jobs:
   # Single deploy job since we're just deploying
   build:
     runs-on: ubuntu-latest
-    container: asciidoctor/docker-asciidoctor:1.69
-
+    
     steps:
       - uses: cachix/install-nix-action@v27
       - name: Checkout
