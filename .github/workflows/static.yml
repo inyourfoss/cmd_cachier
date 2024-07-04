@@ -39,6 +39,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: build documentation
         run: |
+          apk add pandoc
           make documentation
           asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html
           
