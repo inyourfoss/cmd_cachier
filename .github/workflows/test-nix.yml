@@ -39,7 +39,7 @@ jobs:
       - name: build documentation
         run: |
           # apk add pandoc
-          time nix-shell --run "make documentation" ./docs.shell.nix
+          time nix-shell --run "make documentation && asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html" ./docs.shell.nix
           # asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html
           
       - name: Setup Pages
