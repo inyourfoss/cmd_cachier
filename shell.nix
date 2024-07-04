@@ -19,5 +19,6 @@ in pkgs.mkShell {
       pkgs.asciidoctor
       pkgs.python311
       pkgs.hyperfine
+      pkgs.pandoc
     ];
 }
