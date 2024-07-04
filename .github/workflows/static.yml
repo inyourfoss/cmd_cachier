@@ -36,6 +36,11 @@ jobs:
           apk add pandoc
           make documentation
           asciidoctor -b html docs/cmd_cachier.1.adoc --out-file public/index.html
+
+      - name: Archive public folder
+        uses: actions/upload-artifact@v4
+        with:
+          path: './public'
   
   deploy:
     environment:
