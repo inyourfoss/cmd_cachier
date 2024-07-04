@@ -28,6 +28,8 @@ jobs:
     container: asciidoctor/docker-asciidoctor:1.69
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
           # Runs a set of commands using the runners shell
       - name: build documentation
         run: |
