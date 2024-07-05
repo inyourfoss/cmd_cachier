@@ -128,10 +128,14 @@ alias gpup='cd "$(cmd_cachier save YOUR_SEARCH_COMMAND | fzf)"'
 |Resolved in 0.3
 |Every now and then a `dump.rdb` is created in the current directory.
 
+|Resolved in 0.3.5
+|No more memory overcommit message in stdout. It is now redirected to stderr
+so that you recieve the warning but does not interfere with the results.
+
 |Open
 |Man page not availablein non-system installs and cargo installs. (Only help page.)
 
-|Open (planned for 0.3.x or the next 0.4 release)
+|Open (planned for some 0.3.x or the next 0.4 release)
 |Can only use the "redis-server" backend. Choosing "valkey" or "KeyDB" as backend is not supported yet.
 |===
 
