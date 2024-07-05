@@ -7,7 +7,7 @@ pkgs.rustPlatform.buildRustPackage rec {
   version = "${version}";
 
     src = fetchGit {
-        url = "https://gitlab.com/inyourfoss/cmd_cachier.git";
+        url = "https://github.com/inyourfoss/cmd_cachier.git";
         rev = "${commithash}";
     };
 
