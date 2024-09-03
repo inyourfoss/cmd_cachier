@@ -63,7 +63,7 @@ My thanks go out to the redis team and the contributors behind https://crates.io
 
 * `man` usually already installed
 
-=== Via GitLab
+=== Via GitHub
 
 Clone repo:
 
