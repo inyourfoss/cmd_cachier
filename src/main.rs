@@ -123,7 +123,7 @@ fn server_is_running() -> bool {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if ! server_is_running() {
-        println!("Server is not running yet. Starting server...");
+        eprintln!("Server is not running yet. Starting server...");
         start_server(); 
     }
 
