@@ -80,7 +80,7 @@ My thanks go out to the redis team and the contributors behind
 
 Clone repo:
 
-    git clone https://gitlab.com/inyourfoss/cmd_cachier.git
+    git clone git@github.com:inyourfoss/cmd_cachier.git
 
 Move into repo directory:
 
@@ -106,8 +106,7 @@ As of now the man page will not work as it is only a user space install.
 
 # Usage
 
-See manpage
-[here](https://inyourfoss.github.io/cmd_cachier/).
+See manpage [here](https://inyourfoss.github.io/cmd_cachier/).
 
 # Setting up Redis
 
