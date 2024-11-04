@@ -16,12 +16,11 @@ jobs:
       - run: mkdir -p public
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
 
-      - name: Upload artifacts.
-        uses: actions/upload-artifact@v4
+      - name: Upload to pages
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: manpage
+          name: manpage_html
           path: ./public/
-        
 
   Publish-Docs:
     needs: Build-Docs
@@ -36,20 +35,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Download artifact.
-        uses: actions/download-artifact@v4
-        with:
-          name: manpage
-          path: ./public
-
       - name: Debug artifact download.
         run: find . -type f -name "*.html"
 
-      - name: Upload to pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: manpage_html
-          path: ./public/
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v3
