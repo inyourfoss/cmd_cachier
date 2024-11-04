@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: Building pages for ${{github.ref}}
 on: [push]
 jobs:
-  Publish-Docs:
+  Build-Docs:
     runs-on: ubuntu-latest
     container:
       image: asciidoctor/docker-asciidoctor
@@ -16,6 +16,9 @@ jobs:
       - run: mkdir -p public
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
 
+  Publish-Docs:
+    runs-on: ubuntu-latest
+    steps:
       - name: Upload artifact.
         uses: actions/upload-pages-artifact@v3
         with:
