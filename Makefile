@@ -35,16 +35,16 @@ readme: untempl
 	scripts/adoc_to_md.sh "docs/README.adoc" > README.md
 
 manpage_pdf: untempl
-	asciidoctor-pdf -b pdf $(MAN_PAGE_DIR)/manpages/cmd_cachier.1.adoc \
-		--out-file docs/manpages/cmd_cachier.1.pdf
+	asciidoctor-pdf -b pdf $(MAN_PAGE_DIR)/cmd_cachier.1.adoc \
+		--out-file $(MAN_PAGE_DIR)/cmd_cachier.1.pdf
 
 manpage_man: untempl
 	asciidoctor -b manpage $(MAN_PAGE_DIR)/cmd_cachier.1.adoc \
-		--out-file docs/manpages/cmd_cachier.1
+		--out-file $(MAN_PAGE_DIR)/cmd_cachier.1
 
 manpage_html: untempl
 	asciidoctor -b html5 $(MAN_PAGE_DIR)/cmd_cachier.1.adoc \
-		--out-file docs/manpages/cmd_cachier.1.html
+		--out-file $(MAN_PAGE_DIR)/cmd_cachier.1.html
 
 documentation: manpage_pdf manpage_man manpage_html readme
 	@echo created documentation
