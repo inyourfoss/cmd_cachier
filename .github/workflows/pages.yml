@@ -16,6 +16,13 @@ jobs:
       - run: mkdir -p public
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
 
+      - name: Upload artifacts.
+        uses: actions/upload-artifact@v4
+        with:
+          name: manpage
+          path: ./public/index.html
+        
+
   Publish-Docs:
     needs: Build-Docs
     runs-on: ubuntu-latest
@@ -23,10 +30,16 @@ jobs:
       pages: write
       id-token: write
     steps:
+      - name: Download artifact.
+        uses: actions/download-artifact@v4
+        with:
+          name: manpage
+
+
       - name: Debug project structure.
         run: tree ./public
 
-      - name: Upload artifact.
+      - name: Upload to pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public/
