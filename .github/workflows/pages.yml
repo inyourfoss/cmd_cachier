@@ -35,9 +35,8 @@ jobs:
         with:
           name: manpage
 
-
-      - name: Debug project structure.
-        run: tree ./public
+      - name: Debug artifact download.
+        run: find . -type f -name "*.html"
 
       - name: Upload to pages
         uses: actions/upload-pages-artifact@v3
