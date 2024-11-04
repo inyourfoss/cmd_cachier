@@ -3,7 +3,6 @@ run-name: Building pages for ${{github.ref}}
 on: [push]
 jobs:
 
-
   Publish-Docs:
     runs-on: ubuntu-latest
     permissions:
