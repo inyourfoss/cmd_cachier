@@ -48,9 +48,12 @@ jobs:
       - name: Upload to pages
         uses: actions/upload-pages-artifact@v3
         with:
+          name: manpage_html
           path: ./public/
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v3
+        with:
+          artifact_name: manpage
 
 
