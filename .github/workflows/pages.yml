@@ -4,14 +4,12 @@ on: [push]
 jobs:
   Build-Docs:
     runs-on: ubuntu-latest
-    container:
-      image: asciidoctor/docker-asciidoctor
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
 
       - name: Build docs
-        run: make gh_pages
+        run: nix-shell --run "make gh_pages" nix/shells/build-docs/shell.nix
 
       - run: mkdir -p public
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
