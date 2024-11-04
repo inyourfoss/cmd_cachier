@@ -19,7 +19,6 @@ jobs:
       - name: Upload to pages
         uses: actions/upload-pages-artifact@v3
         with:
-          name: manpage_html
           path: ./public/
 
   Publish-Docs:
@@ -29,10 +28,10 @@ jobs:
       pages: write
       id-token: write
 
-    # Deploy to the github-pages environment
-    environment:
-      name: manpage_html
-      url: ${{ steps.deployment.outputs.page_url }}
+#    # Deploy to the github-pages environment
+#    environment:
+#      name: github-pages
+#      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Debug artifact download.
@@ -41,7 +40,5 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v3
-        with:
-          artifact_name: manpage_html
 
 
