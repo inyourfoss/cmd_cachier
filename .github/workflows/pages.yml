@@ -4,8 +4,16 @@ on: [push]
 jobs:
 
 
-  Build-Docs:
+  Publish-Docs:
+    needs: Build-Docs
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
@@ -21,22 +29,8 @@ jobs:
         with:
           path: ./public/
 
-  Publish-Docs:
-    needs: Build-Docs
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
       - name: Debug artifact download.
         run: find . -type f -name "*.html"
-
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v3
