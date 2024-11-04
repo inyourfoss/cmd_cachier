@@ -15,7 +15,7 @@ from string import Template
 
 files = sys.argv[1:]
 
-with open("Cargo.toml", "rb") as f:
+with open("crate/Cargo.toml", "rb") as f:
     proj_data = tomllib.load(f)
 
 metadata = {
