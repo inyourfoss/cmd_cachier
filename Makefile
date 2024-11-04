@@ -19,9 +19,9 @@ uninstall:
 	rm -f "$(LOCAL_BIN_DIR)/cmd_cachier" 
 
 systeminstall:
-	mkdir -p $(MAN_PAGE_INSTALL_DIR)/man1
-	cp $(RELEASE_BIN) "$(SYSTEM_BIN_DIR)"
-	cp $(MAN_PAGE_DIR)/cmd_cachier.1 "$(MAN_PAGE_INSTALL_DIR)/man1"
+	mkdir -p "$(MAN_PAGE_INSTALL_DIR)/man1"
+	cp "$(RELEASE_BIN)" "$(SYSTEM_BIN_DIR)"
+	cp "$(MAN_PAGE_DIR)/cmd_cachier.1" "$(MAN_PAGE_INSTALL_DIR)/man1"
 	mandb
 
 systemuninstall:
