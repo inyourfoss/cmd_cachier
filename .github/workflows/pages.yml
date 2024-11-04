@@ -31,7 +31,7 @@ jobs:
 
     # Deploy to the github-pages environment
     environment:
-      name: github-pages
+      name: manpage_html
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
