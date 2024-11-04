@@ -17,6 +17,7 @@ jobs:
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
 
   Publish-Docs:
+    needs: Build-Docs
     runs-on: ubuntu-latest
     steps:
       - name: Upload artifact.
