@@ -9,3 +9,4 @@ man/*
 .asciidoctorconfig.adoc
 .project
 *.auto
+*.adoc
