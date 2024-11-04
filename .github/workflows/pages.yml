@@ -8,7 +8,7 @@ jobs:
       image: asciidoctor/docker-asciidoctor
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Build docs
         run: make documentation
@@ -17,9 +17,9 @@ jobs:
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
 
       - name: Upload artifact.
-        uses: actions/uploads-pages-artifact@v3
+        uses: actions/uploads-pages-artifact@v1
         with:
           path: ./public/
 
       - name: Deploy to GitHub Pages
-        uses: action/deploy-pages@v4
+        uses: action/deploy-pages@v1
