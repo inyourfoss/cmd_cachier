@@ -6,12 +6,14 @@ use std::process::Stdio;
 use std::io::Write;
 use std::io::Read;
 
-//use redis;
-
 use colored::*;
 
 const REDIS_READ_WRITE_LATENCY_IN_MS: std::time::Duration = std::time::Duration::from_millis(20); // needs to be adjusted on weak hardware
-const VERSION: Option<&str> = option_env!("CARGO_PKG_VERSION"); // https://stackoverflow.com/questions/27840394/how-can-a-rust-program-access-metadata-from-its-cargo-package
+                                                                                                 
+
+// Solution found: https://stackoverflow.com/questions/27840394/how-can-a-rust-program-access-metadata-from-its-cargo-package
+const VERSION: Option<&str> = option_env!("CARGO_PKG_VERSION"); 
+
 
 fn sub_cmd() -> String {
     match env::args().nth(1) {
@@ -232,15 +234,21 @@ fn redis_info() -> Result<(), Box<dyn std::error::Error>> {
 fn redis_meminfo() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open(socket())?;
     let mut _con = client.get_connection()?;
+    let used_mem_size :f64 = redis::cmd("MEMORY").arg("USAGE").arg("cmd").query(&mut _con)?;
 
-    let response :f64 = redis::cmd("MEMORY").arg("USAGE").arg("cmd").query(&mut _con)?;
-    let conversion_number: f64 = 1024.0;
-    let mem_usage_kb: f64 = response/(conversion_number);
-    let mem_usage_mb: f64 = response/(conversion_number*conversion_number);
+    let to_megabytes = |i: f64| -> String { format!("{:.3}KiB", i / (1024.0)) } ;
+    let to_kibibytes = |i: f64| -> String { format!("{:.3}MiB", i / (1024.0 * 1024.0)) } ;
+    let kib_mib_cutoff_in_bytes: f64 = 1000.0 * 1024.0;
+    
 
-    println!("Bytes:\t{:.1}", response);
-    println!("KiB:\t{:.3}", mem_usage_kb);
-    println!("MiB:\t{:.3}", mem_usage_mb);
+    let formated_mem_usage: String = 
+        if used_mem_size > kib_mib_cutoff_in_bytes {
+            to_kibibytes(used_mem_size)
+        } else {
+            to_megabytes(used_mem_size)
+        };
+
+     println!("MEMORY USED:\n{}", formated_mem_usage);
 
     Ok(())
 }
