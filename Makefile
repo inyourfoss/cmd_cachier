@@ -1,25 +1,57 @@
+MAN_PAGE_INSTALL_DIR = /usr/share/man
+SYSTEM_BIN_DIR = /usr/bin
+LOCAL_BIN_DIR = $$HOME/.local/bin
+
+
+RELEASE_BUILD_CMD = "cd crate && cargo build --release"
+RELEASE_BIN = ./crate/target/release/cmd_cachier
+MAN_PAGE_DIR = ./docs/manpages
+
 build:
-	cargo build --release 
+	sh -c $(RELEASE_BUILD_CMD)
+
 install:
-	@echo "Make sure $$HOME/.local/bin is in your PATH environment variable."
-	mkdir -p "$$HOME/.local/bin/"
-	cp ./target/release/cmd_cachier "$$HOME"/.local/bin/cmd_cachier
+	@echo "Make sure $(LOCAL_BIN_DIR) is in your PATH environment variable."
+	mkdir -p $(LOCAL_BIN_DIR)
+	cp $(RELEASE_BIN) "$(LOCAL_BIN_DIR)/cmd_cachier"
+
 uninstall:
-	[ -f "$$HOME"/.local/bin/cmd_cachier ] && rm -f "$$HOME"/.local/bin/cmd_cachier || echo "cmd_cachier not in ~/.local/bin/ exiting.."
+	rm -f "$(LOCAL_BIN_DIR)/cmd_cachier" 
+
 systeminstall:
-	mkdir -p /usr/share/man/man1
-	cp ./target/release/cmd_cachier "/usr/bin/"
-	cp ./man/man1/cmd_cachier.1 "/usr/share/man/man1"
+	mkdir -p $(MAN_PAGE_INSTALL_DIR)/man1
+	cp $(RELEASE_BIN) "$(SYSTEM_BIN_DIR)"
+	cp $(MAN_PAGE_DIR)/cmd_cachier.1 "$(MAN_PAGE_INSTALL_DIR)/man1"
 	mandb
+
 systemuninstall:
-	rm -f "/usr/bin/cmd_cachier"
-	rm -f "/usr/share/man/man1/cmd_cachier*"
-documentation:
-	python3 scripts/prep_docs.py > docs/cmd_cachier.1.adoc
-	scripts/adoc_to_md.sh "templates/templ_readme.adoc" > README.md
-	asciidoctor-pdf -b pdf docs/cmd_cachier.1.adoc --out-file docs/cmd_cachier.1.pdf
-	asciidoctor -b manpage docs/cmd_cachier.1.adoc --out-file man/man1/cmd_cachier.1
-	asciidoctor -b html5 docs/cmd_cachier.1.adoc --out-file docs/cmd_cachier.1.html
-release:
-	python3 scripts/prep_release.py > default.nix # Update commit hash and versionnumber.
-	cargo build --release
+	rm -f "$(SYSTEM_BIN_DIR)/cmd_cachier"
+	rm -f "$(MAN_PAGE_INSTALL_DIR)/man1/cmd_cachier*"
+
+untempl:
+	scripts/untempl.py
+
+readme: untempl
+	scripts/adoc_to_md.sh "docs/README.adoc" > README.md
+
+manpage_pdf: untempl
+	asciidoctor-pdf -b pdf $(MAN_PAGE_DIR)/manpages/cmd_cachier.1.adoc \
+		--out-file docs/manpages/cmd_cachier.1.pdf
+
+manpage_man: untempl
+	asciidoctor -b manpage $(MAN_PAGE_DIR)/cmd_cachier.1.adoc \
+		--out-file docs/manpages/cmd_cachier.1
+
+manpage_html: untempl
+	asciidoctor -b html5 $(MAN_PAGE_DIR)/cmd_cachier.1.adoc \
+		--out-file docs/manpages/cmd_cachier.1.html
+
+documentation: manpage_pdf manpage_man manpage_html readme
+	@echo created documentation
+
+release: build manpage_man manpage_html readme
+	sh -c "$(RELEASE_BUILD_CMD)"
+
+clean:
+	scripts/clean.sh
+
