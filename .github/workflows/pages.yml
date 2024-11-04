@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build docs
-        run: make documentation
+        run: make gh_pages
 
       - run: mkdir -p public
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html

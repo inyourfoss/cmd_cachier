@@ -49,6 +49,9 @@ manpage_html: untempl
 documentation: manpage_pdf manpage_man manpage_html readme
 	@echo created documentation
 
+gh_pages: manpage_html
+	@echo created html manpage
+
 release: build manpage_man manpage_html readme
 	sh -c "$(RELEASE_BUILD_CMD)"
 
