@@ -5,20 +5,19 @@ jobs:
   Publish-Docs:
     runs-on: asciidoctor/docker-asciidoctor
     steps:
-
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Build docs
-        run: make documentation
-
-      - run: mkdir -p public
-      - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
-
-      - name: Upload artifact.
-        uses: actions/uploads-pages-artifact@v3
-        with:
-          path: ./public/
-
-      - name: Deploy to GitHub Pages
-        uses: action/deploy-pages@v4
+#      - name: Build docs
+#        run: make documentation
+#
+#      - run: mkdir -p public
+#      - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
+#
+#      - name: Upload artifact.
+#        uses: actions/uploads-pages-artifact@v3
+#        with:
+#          path: ./public/
+#
+#      - name: Deploy to GitHub Pages
+#        uses: action/deploy-pages@v4
