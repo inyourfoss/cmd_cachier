@@ -2,6 +2,8 @@ name: GitHub Actions Demo
 run-name: Building pages for ${{github.ref}}
 on: [push]
 jobs:
+
+
   Build-Docs:
     runs-on: ubuntu-latest
     steps:
@@ -14,11 +16,13 @@ jobs:
       - run: mkdir -p public
       - run: cp ./docs/manpages/cmd_cachier.1.html ./public/index.html
 
-#  Publish-Docs:
-#    needs: Build-Docs
-#    runs-on: ubuntu-latest
-#    steps:
-#    
+  Publish-Docs:
+    needs: Build-Docs
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
       - name: Debug project structure.
         run: tree ./public
 
