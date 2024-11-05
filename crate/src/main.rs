@@ -132,10 +132,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let version = VERSION.unwrap_or("unknown");
 
     match sub_cmd().as_str() {
+        // save can explicitly save which is usefull for forcefully overwriting previous entries
         "save" => save_cmd(cli_cmd(true))?,
-        "query" => query_cmd(cli_cmd(true))?,
         "version" => println!("cmd_cachier version {version}"),
-        "info" => redis_info()?,
         "meminfo" => redis_meminfo()?,
         "help" => display_help_page()?,
         "none" => display_help_page()?,
@@ -204,7 +203,7 @@ fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 
     redis::cmd("HSET").arg("cmd").arg(joined_args).arg(cmd_stdout).execute(&mut _con);
 
-    //TODO: Implement while loop key is not in cache.
+    //TODO: Implement while loop for when key is not in cache.
     std::thread::sleep(REDIS_READ_WRITE_LATENCY_IN_MS);
 
     query_cmd(args)?;
@@ -213,33 +212,15 @@ fn save_cmd(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 
-fn redis_info() -> Result<(), Box<dyn std::error::Error>> {
-    let client = redis::Client::open(socket())?;
-    let mut _con = client.get_connection()?;
-
-
-    let response: String = redis::cmd("INFO").arg("MEMORY").query(&mut _con)?;
-    let result_list: Vec<&str> = response.split('\n').collect();
-
-    println!("{}", "REDIS MEMORY INFO:".yellow().bold().underline());
-    for result in result_list {
-        if result.contains("human") {
-            println!("{}", result);
-        }
-    }
-
-    Ok(())
-}
-
 fn redis_meminfo() -> Result<(), Box<dyn std::error::Error>> {
     let client = redis::Client::open(socket())?;
     let mut _con = client.get_connection()?;
+
     let used_mem_size :f64 = redis::cmd("MEMORY").arg("USAGE").arg("cmd").query(&mut _con)?;
 
-    let to_megabytes = |i: f64| -> String { format!("{:.3}KiB", i / (1024.0)) } ;
-    let to_kibibytes = |i: f64| -> String { format!("{:.3}MiB", i / (1024.0 * 1024.0)) } ;
+    let to_megabytes = |i: f64| -> String { format!("{:.3} KiB", i / (1024.0)) };
+    let to_kibibytes = |i: f64| -> String { format!("{:.3} MiB", i / (1024.0 * 1024.0)) };
     let kib_mib_cutoff_in_bytes: f64 = 1000.0 * 1024.0;
-    
 
     let formated_mem_usage: String = 
         if used_mem_size > kib_mib_cutoff_in_bytes {
@@ -248,7 +229,7 @@ fn redis_meminfo() -> Result<(), Box<dyn std::error::Error>> {
             to_megabytes(used_mem_size)
         };
 
-     println!("MEMORY USED:\n{}", formated_mem_usage);
+     println!("MEMORY USED:\n  {}", formated_mem_usage);
 
     Ok(())
 }
