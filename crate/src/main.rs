@@ -253,9 +253,6 @@ SUBCOMMANDS
 Force cache refresh for a command:
     $ cmd_cachier save ANY_COMMAND
 
-Force query for a command:
-    $ cmd_cachier query ANY_COMMAND
-
 Display memory usage:
     $ cmd_cachier meminfo
 
