@@ -25,15 +25,15 @@ mod constants {
     pub const REDIS_READ_WRITE_LATENCY_IN_MS: std::time::Duration = std::time::Duration::from_millis(20); // needs to be adjusted on weak hardware
 
     // Define the string to pass as stdin
-    pub fn  config_string() -> String{
-        return format!( r#"
+    pub fn  config_string() -> String {
+        format!( r#"
             port 0
             daemonize yes
             unixsocket '{}'
             unixsocketperm 700
             save ""
             appendonly no
-            "#, crate::socket::dir());
+            "#, crate::socket::dir())
     } 
 }
 
@@ -41,7 +41,7 @@ mod database {
 
     pub fn connection() -> redis::Connection {
         let client: redis::Client = redis::Client::open(crate::socket::unix()).expect("Error: Socket not found");
-        return client.get_connection().expect("Could not establish connection. When querying");
+        client.get_connection().expect("Could not establish connection. When querying")
     }
 
 }
@@ -251,7 +251,6 @@ mod cache_commands {
     }
 
     pub fn display_help_page() -> Result<(), Box<dyn std::error::Error>> {
-        //    eprintln!("{}", "Success!".green().underline().bold());
         let help_page = r#"cmd_cachier help page
 
     USAGE
