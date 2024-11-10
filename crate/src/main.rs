@@ -1,13 +1,16 @@
+mod help;
 
 mod constants {
-    // Solution found: https://stackoverflow.com/questions/27840394/how-can-a-rust-program-access-metadata-from-its-cargo-package
+
     pub const VERSION
         : Option<&str> 
         = option_env!("CARGO_PKG_VERSION"); 
 
+
+    // needs to be adjusted on weak hardware
     pub const REDIS_READ_WRITE_LATENCY_IN_MS
         : std::time::Duration = 
-        std::time::Duration::from_millis(20); // needs to be adjusted on weak hardware
+        std::time::Duration::from_millis(20); 
                                                                                                           //
     pub mod socket {
         pub fn dir() -> String {
@@ -47,7 +50,10 @@ mod database {
         ).expect("Error: Socket not found");
 
         client.get_connection()
-            .expect("Could not establish connection. When querying")
+            .expect(concat!(
+                    "Could not establish connection. ",
+                    "When querying"
+            ))
     }
 }
 
@@ -94,9 +100,10 @@ mod server {
         if is_running() {
             return true
         } else {
-            eprintln!(
-                "Server is not running yet. Starting server..."
-            );
+            eprintln!(concat!(
+                    "Server is not running yet.",
+                    "Starting server..."
+            ));
         }
 
         let config_string = config_string();
@@ -133,13 +140,18 @@ mod server {
             .expect("Failed to read stdout");
 
 
-        eprintln!("{}", String::from_utf8_lossy(&stdout_buffer));
+        eprintln!("{}", 
+            String::from_utf8_lossy(&stdout_buffer)
+        );
 
         // Check if the command was successful
         if status.success() {
             eprintln!("Started server successfully.");
         } else {
-            eprintln!("Server failed with: {:?}", status.code());
+            eprintln!(
+                "Server failed with: {:?}", 
+                status.code()
+            );
         }
 
         while ! (is_running()){
@@ -156,7 +168,8 @@ mod server {
 
     fn is_running() -> bool {
 
-        let dbg_socket :String = crate::constants::socket::unix();
+        let dbg_socket :String = 
+            crate::constants::socket::unix();
 
         let error_message :String = format!(
             "Connection string might be wrong.{dbg_socket}"
@@ -172,27 +185,6 @@ mod server {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    use cache_commands::*;
-
-    server::start();
-
-    let version = constants::VERSION.unwrap_or("unknown");
-
-    match cli_args::sub_cmd().as_str() {
-        // 'save' can explicitly save 
-        // which is usefull for forcefully overwriting previous entries.
-        "save" => save_cmd(cli_args::cli_cmd(true))?,
-        "version" => 
-            println!("cmd_cachier version {version}"),
-        "meminfo" => redis_meminfo()?,
-        "help" => display_help_page()?,
-        "none" => display_help_page()?,
-        _ => save_or_query_cmd(cli_args::cli_cmd(false))?,
-    }
-
-    Ok(())
-}
 
 mod cache_commands {
     use std::process::Command;
@@ -319,40 +311,32 @@ mod cache_commands {
                 to_megabytes(used_mem_size)
             };
 
-         println!("MEMORY USED:\n  {}", formated_mem_usage);
+        println!("MEMORY USED:\n  {}",
+            formated_mem_usage
+        );
 
         Ok(())
     }
-
-    pub fn display_help_page() 
-        -> Result<(), Box<dyn std::error::Error>> {
-
-        let help_page = r#"cmd_cachier help page
-
-    USAGE
-    Basic usage (Saves automatically if command is not already in cache but otherwise prints from cache):
-        $ cmd_cachier ANY_COMMAND
-
-    Use with subcommand:
-        $ cmd_cachier SUBCOMMAND [ANY_COMMAND]
-
-    MORE HELP
-    View man page:
-        $ man cmd_cachier
-
-    SUBCOMMANDS
-    Force cache refresh for a command:
-        $ cmd_cachier save ANY_COMMAND
-
-    Display memory usage:
-        $ cmd_cachier meminfo
-
-    Display help page:
-        $ cmd_cachier help
-    "#;
-        println!("{}", help_page);
-        Ok(())
-    }
-
 }
 
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    use cache_commands::*;
+
+    server::start();
+
+    let version = constants::VERSION.unwrap_or("unknown");
+
+    match cli_args::sub_cmd().as_str() {
+        // 'save' can explicitly save 
+        // which is usefull for forcefully overwriting previous entries.
+        "save" => save_cmd(cli_args::cli_cmd(true))?,
+        "version" => 
+            println!("cmd_cachier version {version}"),
+        "meminfo" => redis_meminfo()?,
+        "help" => help::display_help_page()?,
+        "none" => help::display_help_page()?,
+        _ => save_or_query_cmd(cli_args::cli_cmd(false))?,
+    }
+
+    Ok(())
+}
